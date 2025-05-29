@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/harmony_new/static/css/main.dde8f0e1.chunk.css",
-    "main.js": "/harmony_new/static/js/main.136e231f.chunk.js",
-    "main.js.map": "/harmony_new/static/js/main.136e231f.chunk.js.map",
+    "main.js": "/harmony_new/static/js/main.6554c7fc.chunk.js",
+    "main.js.map": "/harmony_new/static/js/main.6554c7fc.chunk.js.map",
     "runtime~main.js": "/harmony_new/static/js/runtime~main.7eaa6828.js",
     "runtime~main.js.map": "/harmony_new/static/js/runtime~main.7eaa6828.js.map",
     "static/js/2.fdcb2c9d.chunk.js": "/harmony_new/static/js/2.fdcb2c9d.chunk.js",
@@ -10,7 +10,7 @@
     "static/js/3.c02789ba.chunk.js": "/harmony_new/static/js/3.c02789ba.chunk.js",
     "static/js/3.c02789ba.chunk.js.map": "/harmony_new/static/js/3.c02789ba.chunk.js.map",
     "index.html": "/harmony_new/index.html",
-    "precache-manifest.d9711d34d972a299ad23bf54c595957d.js": "/harmony_new/precache-manifest.d9711d34d972a299ad23bf54c595957d.js",
+    "precache-manifest.3d259f615db1ad254d9e23059564778f.js": "/harmony_new/precache-manifest.3d259f615db1ad254d9e23059564778f.js",
     "service-worker.js": "/harmony_new/service-worker.js",
     "static/css/main.dde8f0e1.chunk.css.map": "/harmony_new/static/css/main.dde8f0e1.chunk.css.map"
   }
