@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b8f507e1d08c413471ea37f06cd44ed4",
+    "revision": "2bfbda0364750ace2e073ca2b42dc8be",
     "url": "/harmony_new/index.html"
   },
   {
-    "revision": "698f1dbc1ac6f3d515a1",
+    "revision": "ab591d9d234048b81deb",
     "url": "/harmony_new/static/css/main.dde8f0e1.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/harmony_new/static/js/3.c02789ba.chunk.js"
   },
   {
-    "revision": "698f1dbc1ac6f3d515a1",
-    "url": "/harmony_new/static/js/main.3ffefe18.chunk.js"
+    "revision": "ab591d9d234048b81deb",
+    "url": "/harmony_new/static/js/main.2b2710fb.chunk.js"
   },
   {
     "revision": "fddf16683b13176273bb",
