@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/harmony_new/static/css/main.dde8f0e1.chunk.css",
+    "main.js": "/harmony_new/static/js/main.0e889e9b.chunk.js",
+    "main.js.map": "/harmony_new/static/js/main.0e889e9b.chunk.js.map",
+    "runtime~main.js": "/harmony_new/static/js/runtime~main.7eaa6828.js",
+    "runtime~main.js.map": "/harmony_new/static/js/runtime~main.7eaa6828.js.map",
+    "static/js/2.fdcb2c9d.chunk.js": "/harmony_new/static/js/2.fdcb2c9d.chunk.js",
+    "static/js/2.fdcb2c9d.chunk.js.map": "/harmony_new/static/js/2.fdcb2c9d.chunk.js.map",
+    "static/js/3.c02789ba.chunk.js": "/harmony_new/static/js/3.c02789ba.chunk.js",
+    "static/js/3.c02789ba.chunk.js.map": "/harmony_new/static/js/3.c02789ba.chunk.js.map",
+    "index.html": "/harmony_new/index.html",
+    "precache-manifest.8c5be17d52ec6bdef46603d11121b932.js": "/harmony_new/precache-manifest.8c5be17d52ec6bdef46603d11121b932.js",
+    "service-worker.js": "/harmony_new/service-worker.js",
+    "static/css/main.dde8f0e1.chunk.css.map": "/harmony_new/static/css/main.dde8f0e1.chunk.css.map"
+  }
+}
