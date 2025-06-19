@@ -3,7 +3,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: "Regulator Nova", sans-serif;
+  font-family: "Lexend Giga", sans-serif;
   font-weight: 300;
   font-style: normal;
   overflow: auto; /* ✅ 스크롤 기능은 유지하되 화면에선 스크롤바 안 보이게 */
@@ -32,7 +32,7 @@ body::-webkit-scrollbar,
 }
 
 html {
-  font-family: "Regulator Nova", sans-serif;
+  font-family: "Lexend Giga", sans-serif;
 }
 
 html[lang="ko"] {
@@ -71,13 +71,13 @@ html[lang="ko"] {
   font-weight: bold;
   font-size: 1rem;
   transition: color 0.3s ease;
-  font-family: 'Loos ExtraWide';
+  font-family: 'Lexend Giga';
   font-weight: 400;
 }
 
 .navbar a:hover {
   color: #FE6E3D;
-  font-family: 'Loos ExtraWide';
+  font-family: 'Lexend Giga';
   font-weight: 400;
 }
 

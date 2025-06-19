@@ -4,6 +4,7 @@ import MatterScene from './components/MatterScene';
 import GallerySection from './components/GallerySection';
 import ComposeSlideSection from './components/ComposeSlideSection';
 import LastSection from "./components/LastSection";
+import SPBex from './components/SPBex';
 
 function App() {
   const audioRef = useRef(null);
@@ -17,7 +18,7 @@ function App() {
 
   // 공통 오디오 효과
   useEffect(() => {
-    audioRef.current = new Audio("/sound/for_site/typewriter.mp3");
+    audioRef.current = new Audio(`${process.env.PUBLIC_URL}/sound/for_site/typewriter.mp3`);
     audioRef.current.volume = 0.5;
 
     const playSound = () => {
@@ -110,13 +111,13 @@ function App() {
             <div className="marquee-content">
               {[...Array(10)].map((_, idx) => (
                 <span key={idx} style={{ display: 'inline-block', marginRight: '0vw' }}>
-                  <span style={{ color: '#FE6E3D', fontFamily: 'Loos ExtraWide', fontWeight: 400 }}>H</span>
-                  <span style={{ color: '#000000', fontFamily: 'Loos Extended', fontWeight: 400 }}>a</span>
-                  <span style={{ color: '#6EC1A1', fontFamily: 'Loos ExtraWide', fontWeight: 500 }}>r</span>
-                  <span style={{ color: '#F5BC62', fontFamily: 'Loos ExtraWide', fontWeight: 300 }}>m</span>
-                  <span style={{ color: '#4284F3', fontFamily: 'Loos ExtraWide', fontWeight: 700 }}>o</span>
-                  <span style={{ color: '#000000', fontFamily: 'Loos ExtraWide', fontWeight: 300 }}>n</span>
-                  <span style={{ color: '#EF7A88', fontFamily: 'Loos ExtraWide', fontWeight: 500 }}>y</span>
+                  <span style={{ color: '#FE6E3D', fontFamily: 'Lexend Giga', fontWeight: 500 }}>H</span>
+                  <span style={{ color: '#000000', fontFamily: 'Lexend Giga', fontWeight: 300 }}>a</span>
+                  <span style={{ color: '#6EC1A1', fontFamily: 'Lexend Giga', fontWeight: 500 }}>r</span>
+                  <span style={{ color: '#F5BC62', fontFamily: 'Lexend Giga', fontWeight: 100 }}>m</span>
+                  <span style={{ color: '#4284F3', fontFamily: 'Lexend Giga', fontWeight: 800 }}>o</span>
+                  <span style={{ color: '#000000', fontFamily: 'Lexend Giga', fontWeight: 100 }}>n</span>
+                  <span style={{ color: '#EF7A88', fontFamily: 'Lexend Giga', fontWeight: 300 }}>y</span>
                 </span>
               ))}
             </div>
@@ -136,6 +137,14 @@ function App() {
     <ComposeSlideSection isVisible={isSlideVisible} />
   </div>
 </section>
+
+{/* 세 번째 화면 */}
+      <section className="section" id="section2-1" ref={soundRef} style={{ backgroundColor: "#F7F2EA" }}>
+        <div className="content">
+          <SPBex />
+        </div>
+      </section>
+
 
 
       {/* 세 번째 화면 */}

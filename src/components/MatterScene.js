@@ -57,17 +57,17 @@ const MatterScene = () => {
     Render.run(render); // ⚠️ Runner는 아직 실행하지 않음
 
     const soundPaths = [
-      '/sound/for_site/for_home/Crystal_Ping.mp3',
-      '/sound/for_site/for_home/Glass_Tinkle.mp3',
-      '/sound/for_site/for_home/Metallic_Clink.mp3',
-      '/sound/for_site/for_home/Muted_Xylo_Tap_3.mp3',
-      '/sound/for_site/for_home/Paper_Snap.mp3',
-      '/sound/for_site/for_home/Piano_High_Key.mp3',
-      '/sound/for_site/for_home/Pop.mp3',
-      '/sound/for_site/for_home/Soft_Harp_Pluck.mp3',
-      '/sound/for_site/for_home/Tiny_Bell_Ding.mp3',
-      '/sound/for_site/for_home/Wood_Knock.mp3',
-    ];
+  `${process.env.PUBLIC_URL}/sound/for_site/for_home/Crystal_Ping.mp3`,
+  `${process.env.PUBLIC_URL}/sound/for_site/for_home/Glass_Tinkle.mp3`,
+  `${process.env.PUBLIC_URL}/sound/for_site/for_home/Metallic_Clink.mp3`,
+  `${process.env.PUBLIC_URL}/sound/for_site/for_home/Muted_Xylo_Tap_3.mp3`,
+  `${process.env.PUBLIC_URL}/sound/for_site/for_home/Paper_Snap.mp3`,
+  `${process.env.PUBLIC_URL}/sound/for_site/for_home/Piano_High_Key.mp3`,
+  `${process.env.PUBLIC_URL}/sound/for_site/for_home/Pop.mp3`,
+  `${process.env.PUBLIC_URL}/sound/for_site/for_home/Soft_Harp_Pluck.mp3`,
+  `${process.env.PUBLIC_URL}/sound/for_site/for_home/Tiny_Bell_Ding.mp3`,
+  `${process.env.PUBLIC_URL}/sound/for_site/for_home/Wood_Knock.mp3`,
+];
     const sounds = soundPaths.map((src) => new Audio(src));
 
     const shapes = [];
@@ -203,7 +203,7 @@ const MatterScene = () => {
           left: '80%',
           transform: 'translate(-50%, -50%)',
           fontSize: '22px',
-          fontFamily: 'Loos Extended',
+          fontFamily: 'Lexend Giga',
           fontWeight: '400',
           color: '#333',
           zIndex: 10,

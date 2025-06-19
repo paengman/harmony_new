@@ -3,11 +3,12 @@ import './GallerySection.css';
 
 const dummyItems = Array.from({ length: 10 }, (_, i) => ({
   id: i + 1,
-  image: `/img/image 69.png`,
+  image: `${process.env.PUBLIC_URL}/img/image 69.png`,
   composer: `작곡가 ${i + 1}`,
   likes: 0,
   comments: [],
 }));
+
 
 const GallerySection = () => {
   const [galleryItems, setGalleryItems] = useState(dummyItems);

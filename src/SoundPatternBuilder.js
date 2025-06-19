@@ -3,6 +3,164 @@ import { v4 as uuidv4 } from "uuid";
 import "./soundBuilder.css";
 import { toPng } from "html-to-image";
 import download from "downloadjs";
+import copy from "copy-to-clipboard";
+
+
+const renderShapePreview = (shapeType, cx, cy) => {
+  const color = "#4C3A2E";
+
+  // 🔹 도형 종류에 따라 스케일 조정
+  const isPitchShape = shapeType.startsWith("음계");
+  const scale = isPitchShape ? 0.8 : 0.45;
+
+  const scaled = (element) => (
+    <g transform={`scale(${scale}) translate(${cx / scale - cx}, ${cy / scale - cy})`}>
+      {element}
+    </g>
+  );
+
+  switch (shapeType) {
+    // 박자
+    case "박자-1": return scaled(renderStarShapeFromMatter(cx, cy, color));
+    case "박자-2": return scaled(renderHollowStarShape(cx, cy, color));
+    case "박자-3": return scaled(renderCompactStarShape(cx, cy, color));
+    case "박자-4": return scaled(renderDonutShape(cx, cy, color));
+    case "박자-5": return scaled(renderSmallDonutShape(cx, cy, color));
+    case "박자-6": return scaled(renderSmallFilledCircle(cx, cy, color));
+    case "박자-7": return scaled(renderFatStarShape(cx, cy, color));
+    case "박자-8": return scaled(renderHollowFatStarShape(cx, cy, color));
+    case "박자-9": return scaled(renderMiniFatStarShape(cx, cy, color));
+
+    // 음계
+    case "음계-1": return scaled(renderTriangleShape(cx, cy, color));
+    case "음계-2": return scaled(renderSquareShape(cx, cy, color));
+    case "음계-3": return scaled(renderCircleShape(cx, cy, color));
+    case "음계-4": return scaled(renderSmallSquareShape(cx, cy, color));
+    case "음계-5": return scaled(renderWideRectangleShape(cx, cy, color));
+    case "음계-6": return scaled(renderHalfCircleShape(cx, cy, color));
+    case "음계-7": return scaled(renderWideIsoscelesTriangle(cx, cy, color));
+    case "음계-8": return scaled(renderDiamondSquareShape(cx, cy, color));
+    case "음계-9": return scaled(renderSmallCircleShape(cx, cy, color));
+    case "음계-10": return scaled(renderWavySvgDonutShape(cx, cy, color));
+    case "음계-11": return scaled(renderFourPointStarShape(cx, cy, color));
+    case "음계-12": return scaled(renderAsteriskShape(cx, cy, color));
+    case "음계-13": return scaled(renderPointyDonutShape(cx, cy, color));
+    case "음계-14": return scaled(renderEightPointStarShape(cx, cy, color));
+    case "음계-15": return scaled(renderSixArmAsteriskShape(cx, cy, color));
+    case "음계-16": return scaled(renderGearDonutShape(cx, cy, color));
+    case "음계-17": return scaled(renderBroadEightPointStar(cx, cy, color));
+    case "음계-18": return scaled(renderBarAsteriskShape(cx, cy, color));
+
+    // 배경음
+   // 배경음
+case "배경음-1":
+  return (
+    <line
+      x1={cx - 30}
+      y1={cy}
+      x2={cx + 30}
+      y2={cy}
+      stroke={color}
+      strokeWidth={4}
+      strokeDasharray="10,5"
+    />
+  );
+case "배경음-2":
+  return (
+    <line
+      x1={cx - 30}
+      y1={cy}
+      x2={cx + 30}
+      y2={cy}
+      stroke={color}
+      strokeWidth={4}
+    />
+  );
+case "배경음-3":
+  return (
+    <path
+      d={`M${cx - 30},${cy} Q${cx - 20},${cy - 10} ${cx - 10},${cy} 
+         T${cx + 10},${cy} T${cx + 30},${cy}`}
+      stroke={color}
+      strokeWidth={4}
+      fill="none"
+    />
+  );
+case "배경음-4":
+  return (
+    <path
+      d={`M ${cx - 30} ${cy} Q ${cx - 15} ${cy - 40}, ${cx} ${cy} T ${cx + 30} ${cy}`}
+      stroke={color}
+      strokeWidth={4}
+      fill="none"
+    />
+  );
+case "배경음-5":
+  return (
+    <polyline
+      points={`
+        ${cx - 30},${cy}
+        ${cx - 25},${cy - 20}
+        ${cx - 20},${cy + 10}
+        ${cx - 10},${cy - 15}
+        ${cx},${cy + 5}
+        ${cx + 10},${cy - 20}
+        ${cx + 20},${cy + 10}
+        ${cx + 30},${cy}
+      `}
+      stroke={color}
+      strokeWidth={4}
+      fill="none"
+    />
+  );
+
+
+    // 강세
+    case "강세-1":
+      return <rect x={cx - 25} y={cy - 6} width={50} height={12} fill={color} rx={3} />;
+    case "강세-2":
+      return <polygon points={`${cx - 30},${cy} ${cx + 30},${cy - 20} ${cx + 30},${cy + 20}`} fill={color} />;
+    case "강세-3":
+      return <polygon points={`${cx + 30},${cy} ${cx - 30},${cy - 20} ${cx - 30},${cy + 20}`} fill={color} />;
+    case "강세-4":
+      return <line x1={cx - 30} y1={cy} x2={cx + 30} y2={cy} stroke={color} strokeWidth={6} strokeLinecap="round" />;
+    case "강세-5":
+      return <line x1={cx} y1={cy - 20} x2={cx} y2={cy + 20} stroke={color} strokeWidth={6} strokeLinecap="round" />;
+
+    default:
+      return <circle cx={cx} cy={cy} r={6} fill={color} />;
+  }
+};
+
+
+
+
+const renderStarPreview = (cx, cy, color) => {
+  const h = 80;
+  const w = 3;
+  const lines = [];
+  for (let i = 0; i < 12; i++) {
+    const angle = (i * 30 * Math.PI) / 180;
+    const sin = Math.sin(angle);
+    const cos = Math.cos(angle);
+    const x1 = cx;
+    const y1 = cy;
+    const x2 = cx + sin * (h * 0.5);
+    const y2 = cy - cos * (h * 0.5);
+    lines.push(
+      <line
+        key={`line-${i}`}
+        x1={x1}
+        y1={y1}
+        x2={x2}
+        y2={y2}
+        stroke={color}
+        strokeWidth={w}
+      />
+    );
+  }
+  return <g>{lines}</g>;
+};
 
 
 const SHAPES_BY_CATEGORY = {
@@ -32,20 +190,83 @@ const initialShape = (xPercent, yPercent, type = "박자-1", size = 40) => ({
 });
 
 const rhythmSounds = {
-  "#4284F3": ["/sound/rhythm/blue/r1.mp3", "/sound/rhythm/blue/r2.mp3"],
-  "#6EC1A1": ["/sound/rhythm/green/r4.mp3", "/sound/rhythm/green/r21.mp3"],
-  "#F5BC62": ["/sound/rhythm/yellow/r5.mp3", "/sound/rhythm/yellow/r6.mp3"],
-  "#FE6E3D": ["/sound/rhythm/orange/r7.mp3", "/sound/rhythm/orange/r8_01.mp3"],
-  "#EF7A88": ["/sound/rhythm/pink/r16.mp3", "/sound/rhythm/pink/r17.mp3"],
+  "#4284F3": [
+    `${process.env.PUBLIC_URL}/sound/rhythm/blue/r1.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/blue/r2.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/blue/r3.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/blue/r13.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/blue/r15.mp3`,
+  ],
+  "#6EC1A1": [
+    `${process.env.PUBLIC_URL}/sound/rhythm/green/r4.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/green/r21.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/green/r22.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/green/r23.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/green/r24.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/green/r25.mp3`,
+  ],
+  "#F5BC62": [
+    `${process.env.PUBLIC_URL}/sound/rhythm/yellow/r5.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/yellow/r6.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/yellow/r14.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/yellow/r19.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/yellow/r20.mp3`,
+  ],
+  "#FE6E3D": [
+    `${process.env.PUBLIC_URL}/sound/rhythm/orange/r7.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/orange/r8_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/orange/r8.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/orange/r9.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/orange/r10.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/orange/r11.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/orange/r18.mp3`,
+  ],
+  "#EF7A88": [
+    `${process.env.PUBLIC_URL}/sound/rhythm/pink/r16.mp3`,
+    `${process.env.PUBLIC_URL}/sound/rhythm/pink/r17.mp3`,
+  ],
 };
 
+
 const durationSounds = {
-  "#4284F3": ["/sound/duration/blue/d5_01.mp3", "/sound/duration/blue/d11_01.mp3"],
-  "#6EC1A1": ["/sound/duration/green/d1_01.mp3", "/sound/duration/green/d6_01.mp3"],
-  "#FE6E3D": ["/sound/duration/orange/d4_01.mp3", "/sound/duration/orange/d7_01.mp3"],
-  "#EF7A88": ["/sound/duration/pink/d24_01.mp3"],
-  "#F5BC62": ["/sound/duration/yellow/d2_01.mp3", "/sound/duration/yellow/d3_01.mp3"],
+  "#4284F3": [
+    `${process.env.PUBLIC_URL}/sound/duration/blue/d5_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/blue/d11_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/blue/d16_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/blue/d17_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/blue/d18_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/blue/d20_01.mp3`,
+  ],
+  "#6EC1A1": [
+    `${process.env.PUBLIC_URL}/sound/duration/green/d1_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/green/d6_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/green/d11_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/green/d12_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/green/d13_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/green/d25_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/green/d26_01.mp3`,
+  ],
+  "#FE6E3D": [
+    `${process.env.PUBLIC_URL}/sound/duration/orange/d4_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/orange/d7_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/orange/d8_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/orange/d9_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/orange/d21_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/orange/d22_01.mp3`,
+  ],
+  "#EF7A88": [
+    `${process.env.PUBLIC_URL}/sound/duration/pink/d24_01.mp3`,
+  ],
+  "#F5BC62": [
+    `${process.env.PUBLIC_URL}/sound/duration/yellow/d2_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/yellow/d3_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/yellow/d10_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/yellow/d14_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/yellow/d15_01.mp3`,
+    `${process.env.PUBLIC_URL}/sound/duration/yellow/d19_01.mp3`,
+  ],
 };
+
 
 const pitchGroups = {
   "#4284F3": ["p1", "p11", "p18", "p19"],
@@ -1091,7 +1312,7 @@ const renderShrinkingAccentBar = (y, svgWidth, isSelected, shape, setDraggingId,
 
 
 
-const SoundPatternBuilder = () => {
+const SoundPatternBuilder = ({ presetShapes = null, readOnly = false, onPlaybackEnd, resetPlayback }) => {
   const [shapes, setShapes] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedShape, setSelectedShape] = useState(null);
@@ -1104,6 +1325,11 @@ const SoundPatternBuilder = () => {
   const [showPitchLines, setShowPitchLines] = useState(true);
   const [showSaveModal, setShowSaveModal] = useState(false);
 const [composerName, setComposerName] = useState("");
+const [shapePage, setShapePage] = useState(0);
+const [palettePos, setPalettePos] = useState({ x: 0, y: 0 });
+
+
+
 
 
   const svgRef = useRef(null);
@@ -1112,6 +1338,40 @@ const [composerName, setComposerName] = useState("");
   const pauseTimeRef = useRef(null);
   const animationRef = useRef(null);
   const activeAudios = useRef([]);
+  const colorPaletteRef = useRef(null); // 🔹 추가
+  const isPlayingRef = useRef(false);
+const isPausedRef = useRef(false);
+
+  const currentShapes = SHAPES_BY_CATEGORY[selectedCategory] || [];
+  const shapesPerPage = 5;
+  const startIndex = shapePage * shapesPerPage;
+  const paginatedShapes = currentShapes.slice(startIndex, startIndex + shapesPerPage);
+
+
+  const handleExportShapes = () => {
+  const exportData = JSON.stringify(shapes, null, 2);
+  copy(exportData);
+  console.log("복사 완료! 콘솔에도 출력됨 👇");
+  console.log(exportData);
+};
+
+useEffect(() => {
+  if (presetShapes) {
+    setShapes(presetShapes.map(shape => ({ ...shape, id: uuidv4() })));
+  }
+}, [presetShapes]);
+
+useEffect(() => {
+  isPlayingRef.current = isPlaying;
+}, [isPlaying]);
+
+useEffect(() => {
+  isPausedRef.current = isPaused;
+}, [isPaused]);
+
+
+
+  
 
 // 🔼 컴포넌트 상단에 함수 정의 추가
 const handleSaveToGallery = () => {
@@ -1132,12 +1392,44 @@ const handleSaveToGallery = () => {
 };
 
 
+useEffect(() => {
+  if (!selectedId || !svgRef.current) return;
+
+  const svgRect = svgRef.current.getBoundingClientRect();
+  const shape = shapes.find(s => s.id === selectedId);
+  if (!shape) return;
+
+  const svgWidth = svgRect.width;
+  const svgHeight = svgRect.height;
+
+  const x = (shape.xPercent / 100) * svgWidth;
+  const y = (shape.yPercent / 100) * svgHeight;
+
+  // 도형의 크기를 고려해서 위쪽으로 이동
+  const offsetY = shape.size ? shape.size * 0.8 : 70; // 없으면 기본값 70
+
+  setPalettePos({ x: svgRect.left + x, y: svgRect.top + y - offsetY });
+}, [selectedId, shapes]);
+
+
+
+
   useEffect(() => {
     shapesRef.current = shapes;
   }, [shapes]);
 
+  // 🔁 resetPlayback이 true일 때 재생 초기화
+useEffect(() => {
+  if (resetPlayback) {
+    setPlayheadX(0);      // 플레이헤드 위치 초기화
+    setIsPlaying(false);  // 재생 중지
+  }
+}, [resetPlayback]);
+
+
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (readOnly) return; // 🔒 삭제 금지
       if ((e.key === "Delete" || e.key === "Backspace") && selectedId) {
         setShapes(prev => prev.filter(shape => shape.id !== selectedId));
         setSelectedId(null);
@@ -1156,11 +1448,21 @@ const handleSaveToGallery = () => {
     let audio = null;
 
     if (shape.type.startsWith("배경음")) {
-      const files = durationSounds[color];
-      if (!files) return;
-      audio = new Audio(files[Math.floor(Math.random() * files.length)]);
-      audio.volume = 0.5;
-    } else if (shape.type.startsWith("음계")) {
+  const files = durationSounds[color];
+  if (!files) return;
+
+  const audio = new Audio(files[Math.floor(Math.random() * files.length)]);
+  audio.volume = 0.5;
+
+  const svgWidth = svgRef.current?.clientWidth || 800;
+  const shapeX = (shape.xPercent / 100) * svgWidth;
+  const progressRatio = Math.max(0, Math.min(1, (playheadX - shapeX) / svgWidth));
+  audio.currentTime = PLAYBACK_DURATION / 1000 * progressRatio;
+
+  audio.play().catch(() => {});
+  activeAudios.current.push(audio);
+}
+ else if (shape.type.startsWith("음계")) {
       const group = shape.group;
       if (!group || !pitch) return;
       const validGroups = pitchGroups[color];
@@ -1176,8 +1478,8 @@ const handleSaveToGallery = () => {
         "C": "C", "D": "D", "E": "E", "F": "F", "G": "G", "A": "A", "B": "B", "C'": "Cprime"
       };
       const safePitch = pitchMap[pitch];
-      const path = `/sound/pitch/${folder}/${group}/${group}_${safePitch}.mp3`;
-      audio = new Audio(path);
+      const path = `${process.env.PUBLIC_URL}/sound/pitch/${folder}/${group}/${group}_${safePitch}.mp3`;
+audio = new Audio(path);
       audio.volume = 0.7;
     } else if (shape.type.startsWith("박자")) {
       const files = rhythmSounds[color];
@@ -1193,55 +1495,63 @@ const handleSaveToGallery = () => {
   };
 
   const step = (timestamp) => {
-    if (!isPlaying || isPaused) return;
-    const svgWidth = svgRef.current?.clientWidth || 800;
-    const svgHeight = svgRef.current?.clientHeight || 800;
+  if (!isPlayingRef.current || isPausedRef.current) return;
 
-    if (!startTimeRef.current) startTimeRef.current = timestamp - (pauseTimeRef.current || 0);
-    const elapsed = timestamp - startTimeRef.current;
-    const newX = (elapsed / PLAYBACK_DURATION) * svgWidth;
+  const svgWidth = svgRef.current?.clientWidth || 800;
+  const svgHeight = svgRef.current?.clientHeight || 800;
 
-    if (newX > svgWidth) {
-      setIsPlaying(false);
-      setPlayheadX(0);
-      startTimeRef.current = null;
-      pauseTimeRef.current = null;
-      cancelAnimationFrame(animationRef.current);
-      return;
-    }
+  if (!startTimeRef.current) {
+    startTimeRef.current = timestamp - (pauseTimeRef.current || 0);
+  }
 
-    setPlayheadX(newX);
+  const elapsed = timestamp - startTimeRef.current;
+  const newX = (elapsed / PLAYBACK_DURATION) * svgWidth;
 
-    shapesRef.current.forEach((shape) => {
-      const shapeX = (shape.xPercent / 100) * svgWidth;
-      const shapeY = (shape.yPercent / 100) * svgHeight;
-
-      if (shape.type.startsWith("배경음")) {
-        if (shape.lastPlayed === 0) {
-          playSoundForShape(shape, null, elapsed);
-        }
-      } else {
-        if (Math.abs(shapeX - newX) < 10) {
-          const pitch = shape.type.startsWith("음계") ? getPitchFromY(shapeY, svgHeight) : null;
-          playSoundForShape(shape, pitch, elapsed);
-        }
-      }
-    });
-
-    animationRef.current = requestAnimationFrame(step);
-  };
-
-  const startPlayback = () => {
-    shapesRef.current.forEach((s) => (s.lastPlayed = 0));
-    setIsPlaying(true);
-    setIsPaused(false);
+  if (newX > svgWidth) {
+    setIsPlaying(false);
     setPlayheadX(0);
     startTimeRef.current = null;
     pauseTimeRef.current = null;
-    activeAudios.current = [];
     cancelAnimationFrame(animationRef.current);
-    animationRef.current = requestAnimationFrame(step);
-  };
+
+    if (onPlaybackEnd) onPlaybackEnd(); // ✅ 한 번만 실행
+    return;
+  }
+
+  setPlayheadX(newX);
+
+  shapesRef.current.forEach((shape) => {
+    const shapeX = (shape.xPercent / 100) * svgWidth;
+    const shapeY = (shape.yPercent / 100) * svgHeight;
+
+    if (shape.type.startsWith("배경음")) {
+      if (shape.lastPlayed === 0) {
+        playSoundForShape(shape, null, elapsed);
+      }
+    } else {
+      if (Math.abs(shapeX - newX) < 10) {
+        const pitch = shape.type.startsWith("음계") ? getPitchFromY(shapeY, svgHeight) : null;
+        playSoundForShape(shape, pitch, elapsed);
+      }
+    }
+  });
+
+  animationRef.current = requestAnimationFrame(step); // 🔁 계속 반복
+};
+
+
+  const startPlayback = () => {
+  shapesRef.current.forEach((s) => (s.lastPlayed = 0));
+  setIsPlaying(true);
+  setIsPaused(false);
+  setPlayheadX(0);
+  startTimeRef.current = null;
+  pauseTimeRef.current = null;
+  activeAudios.current = [];
+
+  cancelAnimationFrame(animationRef.current); // 중복 방지
+  animationRef.current = requestAnimationFrame(step);
+};
 
   const pausePlayback = () => {
     if (isPlaying && !isPaused) {
@@ -1260,16 +1570,58 @@ const handleSaveToGallery = () => {
     }
   };
 
-  const addShape = () => {
-    if (!selectedShape || !selectedCategory) return;
-    const newShape = initialShape(20, 50, selectedShape);
-    if (selectedCategory === "음계") {
-      const groups = pitchGroups[selectedColor];
-      if (groups?.length > 0) newShape.group = groups[Math.floor(Math.random() * groups.length)];
+  const togglePlayPause = () => {
+  if (isPlaying) {
+    if (isPaused) {
+      startTimeRef.current = null; // ✅ 꼭 추가
+      resumePlayback();
+    } else {
+      pausePlayback();
     }
-    newShape.customColor = selectedColor;
-    setShapes([...shapesRef.current, newShape]);
-  };
+  } else {
+    // 재생이 멈춘 상태라면 startTime도 초기화 필요
+    startTimeRef.current = null; // ✅ 꼭 추가
+    startPlayback();
+  }
+};
+
+
+const seekPlayback = (direction) => {
+  const svgWidth = svgRef.current?.clientWidth || 800;
+  const delta = (3000 / PLAYBACK_DURATION) * svgWidth;
+
+  const prevX = playheadX;
+  const nextX = Math.max(0, Math.min(svgWidth, direction === "back" ? prevX - delta : prevX + delta));
+
+  setPlayheadX(Math.round(nextX));
+  pauseTimeRef.current = Math.round((nextX / svgWidth) * PLAYBACK_DURATION);
+
+  shapesRef.current.forEach(s => s.lastPlayed = 0);
+
+
+};
+
+
+
+
+
+
+
+
+
+  const addShape = (shapeIdParam, categoryParam) => {
+    if (readOnly) return; // 🔒 예제 모드일 경우 도형 추가 차단
+  if (!shapeIdParam || !categoryParam) return;
+  const newShape = initialShape(20, 50, shapeIdParam);
+
+  if (categoryParam === "음계") {
+    newShape.y = getClosestLeadY(newShape.y);
+    newShape.group = pitchGroups[getClosestLeadY(newShape.y)];
+  }
+
+  setShapes((prev) => [...prev, newShape]);
+};
+
 
   const handleMouseMove = (e) => {
   const svgRect = svgRef.current.getBoundingClientRect();
@@ -1337,7 +1689,7 @@ const handleDownload = () => {
 
   return (
     <section className="builder-section">
-      <div className="builder-canvas">
+      <div className={`builder-canvas ${readOnly ? "read-only" : ""}`}>
         <svg
           ref={svgRef}
           className="builder-svg"
@@ -1347,7 +1699,7 @@ const handleDownload = () => {
             if (e.target === e.currentTarget) setSelectedId(null);
           }}
         >
-          {showPitchLines &&
+          {showPitchLines && !readOnly &&
             Array.from({ length: NUM_PITCH_LINES }).map((_, i) => {
               const svgHeight = svgRef.current?.clientHeight || 800;
               const svgWidth = svgRef.current?.clientWidth || 800;
@@ -1376,7 +1728,7 @@ const handleDownload = () => {
       y1={y}
       x2={svgWidth}
       y2={y}
-      stroke={shape.customColor || "skyblue"}
+      stroke={shape.customColor || "black"}
       strokeWidth={isSelected ? 8 : 6}
       strokeDasharray="12 8" // 점선 처리
       onMouseDown={(e) => {
@@ -1400,7 +1752,7 @@ if (shape.type === "배경음-3") {
   return renderWavyLineShape(
     y,
     svgWidth,
-    shape.customColor || "skyblue",
+    shape.customColor || "black",
     isSelected,
     shape,
     setDraggingId,
@@ -1417,7 +1769,7 @@ if (shape.type === "배경음-4") {
   return renderCurvedEmotionLine(
     y,
     svgWidth,
-    shape.customColor || "skyblue",
+    shape.customColor || "black",
     isSelected,
     shape,
     setDraggingId,
@@ -1434,7 +1786,7 @@ if (shape.type === "배경음-5") {
   return renderSharpBeatLine(
     y,
     svgWidth,
-    shape.customColor || "skyblue",
+    shape.customColor || "black",
     isSelected,
     shape,
     setDraggingId,
@@ -1452,7 +1804,7 @@ if (shape.type === "배경음-5") {
                   y1={y}
                   x2={svgWidth}
                   y2={y}
-                  stroke={shape.customColor || "skyblue"}
+                  stroke={shape.customColor || "black"}
                   strokeWidth={isSelected ? 8 : 6}
                   onMouseDown={(e) => {
                     e.stopPropagation();
@@ -2108,29 +2460,137 @@ if (shape.type === "음계-18") {
       </div>
 
       <div className="builder-controls">
-        {!selectedCategory ? (
+        <div className="shape-category-wrapper"></div>
+        {!readOnly && !selectedCategory ? (
           <div>
-            {CATEGORIES.map((cat) => (
-              <button key={cat} onClick={() => { setSelectedCategory(cat); setSelectedShape(null); }}>{cat}</button>
-            ))}
+            {CATEGORIES.map((cat) => {
+  const representativeShape = {
+    박자: "박자-1",
+    음계: "음계-3",
+    배경음: "배경음-3",
+    강세: "강세-2",
+  }[cat];
+
+  const tooltips = {
+    박자: "도형을 추가해 박자를 만들어보세요.",
+    음계: "원하는 음을 구성해보세요.",
+    배경음: "소리의 배경 분위기를 더해보세요.",
+    강세: "음악의 강약을 조절해보세요.",
+  };
+
+  return (
+    <div key={cat} className="tooltip-wrapper">
+      <button
+        onClick={() => {
+          setSelectedCategory(cat);
+          setSelectedShape(null);
+        }}
+        className={`shape-icon-button ${selectedCategory === cat ? "selected" : ""}`}
+      >
+        <svg width="50" height="50" viewBox="0 0 120 120">
+          {renderShapePreview(representativeShape, 60, 60)}
+        </svg>
+      </button>
+      <span className="tooltip-text">{tooltips[cat]}</span>
+    </div>
+  );
+})}
+
+
           </div>
         ) : (
           <>
+          {!readOnly && (
             <div>
-              {SHAPES_BY_CATEGORY[selectedCategory].map((shape) => (
-                <button key={shape} onClick={() => setSelectedShape(shape)}>{shape}</button>
-              ))}
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+  <button
+    onClick={() => setShapePage((prev) => Math.max(prev - 1, 0))}
+    disabled={shapePage === 0}
+  >
+    ◀
+  </button>
+
+  {paginatedShapes.map((shapeId) => (
+  <button
+    key={shapeId}
+    className={`shape-icon-button ${selectedShape === shapeId ? "selected" : ""}`}
+    onClick={() => {
+      setSelectedShape(shapeId);
+      addShape(shapeId, selectedCategory); // ✅ 선택 즉시 도형 추가
+    }}
+  >
+    <svg width="60" height="60" viewBox="0 0 120 120">
+      {renderShapePreview(shapeId, 60, 60)}
+    </svg>
+  </button>
+))}
+
+  <button
+    onClick={() =>
+      setShapePage((prev) =>
+        (prev + 1) * shapesPerPage < currentShapes.length ? prev + 1 : prev
+      )
+    }
+    disabled={(shapePage + 1) * shapesPerPage >= currentShapes.length}
+  >
+    ▶
+  </button>
+  <button onClick={() => setSelectedCategory(null)}>BACK</button>
+            
+</div>
+
             </div>
-            <button onClick={() => setSelectedCategory(null)}>← 카테고리로 돌아가기</button>
-          </>
-        )}
+  
+          )}
+  </>
+)}
 
         <div style={{ marginTop: 10 }}>
-          <button onClick={addShape}>Add Shape</button>
-          <button onClick={startPlayback}>▶</button>
-          <button onClick={pausePlayback}>⏸</button>
-          <button onClick={resumePlayback}>⏵</button>
-          <button onClick={() => setShowSaveModal(true)}>저장하기</button>
+  <div className="play-controls" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+    <button onClick={() => seekPlayback("back")}><svg xmlns="http://www.w3.org/2000/svg" width="43" height="27" viewBox="0 0 43 27" fill="none">
+    <path d="M20.5 10.9019C18.5 12.0566 18.5 14.9434 20.5 16.0981L31.75 22.5933C33.75 23.748 36.25 22.3046 36.25 19.9952V7.00481C36.25 4.69541 33.75 3.25203 31.75 4.40673L20.5 10.9019Z" fill="#4C3A2E"/>
+    <path d="M4.5 10.9019C2.5 12.0566 2.5 14.9434 4.5 16.0981L15.75 22.5933C17.75 23.748 20.25 22.3046 20.25 19.9952V7.00481C20.25 4.69541 17.75 3.25203 15.75 4.40673L4.5 10.9019Z" fill="#4C3A2E"/>
+  </svg></button>
+    <button onClick={togglePlayPause} className="play-button">
+  {isPlaying ? (
+    isPaused ? (
+      // ▶ Resume
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="29" viewBox="0 0 25 29" fill="none">
+        <path d="M23.5 11.9019C25.5 13.0566 25.5 15.9434 23.5 17.0981L4.75 27.9234C2.75 29.0781 0.25 27.6347 0.25 25.3253V3.67468C0.25 1.36528 2.75 -0.0780933 4.75 1.07661L23.5 11.9019Z" fill="#4C3A2E"/>
+      </svg>
+    ) : (
+      // ⏸ Pause
+      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="26" viewBox="0 0 17 26" fill="none">
+  <rect width="6.61099" height="25.4995" rx="2" fill="black"/>
+  <rect x="10.3892" width="6.61099" height="25.4995" rx="2" fill="#4C3A2E"/>
+</svg>
+    )
+  ) : (
+    // ▶ First play
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="29" viewBox="0 0 25 29" fill="none">
+      <path d="M23.5 11.9019C25.5 13.0566 25.5 15.9434 23.5 17.0981L4.75 27.9234C2.75 29.0781 0.25 27.6347 0.25 25.3253V3.67468C0.25 1.36528 2.75 -0.0780933 4.75 1.07661L23.5 11.9019Z" fill="#4C3A2E"/>
+    </svg>
+  )}
+</button>
+
+    <button onClick={() => seekPlayback("forward")}><svg xmlns="http://www.w3.org/2000/svg" width="43" height="27" viewBox="0 0 43 27" fill="none">
+    <path d="M22.5 10.9019C24.5 12.0566 24.5 14.9434 22.5 16.0981L11.25 22.5933C9.25 23.748 6.75 22.3046 6.75 19.9952V7.00481C6.75 4.69541 9.25 3.25203 11.25 4.40673L22.5 10.9019Z" fill="#4C3A2E"/>
+    <path d="M38.5 10.9019C40.5 12.0566 40.5 14.9434 38.5 16.0981L27.25 22.5933C25.25 23.748 22.75 22.3046 22.75 19.9952V7.00481C22.75 4.69541 25.25 3.25203 27.25 4.40673L38.5 10.9019Z" fill="#4C3A2E"/>
+  </svg></button>
+  </div>
+          {!readOnly && (
+  <button className="save-button" onClick={() => setShowSaveModal(true)}>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path
+      d="M12.9468 16.332L7.94678 11.332L9.34678 9.88203L11.9468 12.482V4.33203H13.9468V12.482L16.5468 9.88203L17.9468 11.332L12.9468 16.332ZM6.94678 20.332C6.39678 20.332 5.92594 20.1362 5.53428 19.7445C5.14261 19.3529 4.94678 18.882 4.94678 18.332V15.332H6.94678V18.332H18.9468V15.332H20.9468V18.332C20.9468 18.882 20.7509 19.3529 20.3593 19.7445C19.9676 20.1362 19.4968 20.332 18.9468 20.332H6.94678Z"
+      fill="#4C3A2E"
+    />
+  </svg>
+</button>
+)}
+
+
+
 
         </div>
 
@@ -2156,39 +2616,77 @@ if (shape.type === "음계-18") {
 
 
 
-        
+{!readOnly && selectedId && (
+  <div
+    ref={colorPaletteRef}
+    style={{
+      position: "absolute",
+      top: `${palettePos.y - 70}px`,  // 도형 아래
+      left: `${palettePos.x - 70}px`, // 도형 오른쪽
+      display: "flex",
+      gap: "6px",
+      background: "#F7F2EA", // ✅ 베이지 배경
+      padding: "4px 6px",
+      borderRadius: "6px",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+      zIndex: 1000
+    }}
+  >
+    {["#FE6E3D", "#6EC1A1", "#F5BC62", "#4284F3", "#EF7A88"].map((color) => (
+      <button
+        key={color}
+        style={{
+          backgroundColor: color,
+          width: 20,
+          height: 20,
+          borderRadius: "50%", // ✅ 완전한 원형
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.15)", // 살짝 입체감
+          cursor: "pointer",
+          padding: 0,
+    boxSizing: "border-box",
+    display: "inline-block", // 혹시 몰라서 추가
+    outline: "none",
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          setSelectedColor(color);
+          setShapes(prev =>
+            prev.map(shape => {
+              if (shape.id === selectedId) {
+                const groups = pitchGroups[color];
+                const newGroup = groups?.length > 0
+                  ? groups[Math.floor(Math.random() * groups.length)]
+                  : shape.group;
+                return { ...shape, customColor: color, group: newGroup };
+              }
+              return shape;
+            })
+          );
+        }}
+      />
+    ))}
+  </div>
+)}
 
-        <div style={{ marginTop: 10 }}>
-          {["#FE6E3D", "#6EC1A1", "#F5BC62", "#4284F3", "#EF7A88"].map((color) => (
-            <button
-              key={color}
-              style={{ backgroundColor: color, width: 24, height: 24, borderRadius: "50%", marginRight: 6 }}
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedColor(color);
-                setShapes(prev =>
-                  prev.map(shape => {
-                    if (shape.id === selectedId) {
-                      const groups = pitchGroups[color];
-                      const newGroup = groups?.length > 0
-                        ? groups[Math.floor(Math.random() * groups.length)]
-                        : shape.group;
-                      return { ...shape, customColor: color, group: newGroup };
-                    }
-                    return shape;
-                  })
-                );
-              }}
-              title={color}
-            />
-          ))}
-        </div>
 
-        <div style={{ marginTop: 10 }}>
-          <button onClick={() => setShowPitchLines(!showPitchLines)}>
-            리드줄 {showPitchLines ? "끄기" : "보이기"}
-          </button>
-        </div>
+
+
+        {!readOnly && (
+  <div className="pitchline-toggle tooltip-wrapper">
+    <label className="switch">
+      <input
+        type="checkbox"
+        checked={showPitchLines}
+        onChange={() => setShowPitchLines(!showPitchLines)}
+      />
+      <span className="slider">
+        <span className="label-text">Line</span>
+      </span>
+    </label>
+    <span className="tooltip-text">리드 라인을 켜거나 끌 수 있어요.</span>
+  </div>
+)}
+
       </div>
     </section>
 

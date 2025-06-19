@@ -5,22 +5,64 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
+
+.save-button {
+  position: absolute;
+  top: 60px;
+  right: 16px;
+  z-index: 10;
+  background-color: none;
+}
+
 
 .builder-controls {
   padding: 8px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  flex-direction: column;
   justify-content: center;
   background: none;
+  align-items: center; /* ← 이거 추가 */
+  background-color: transparent;
 }
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4C3A2E;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 999;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.tooltip-wrapper:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
 
 .builder-controls select,
 .builder-controls button {
   padding: 10px 16px;
-  border: 1px solid #8B6F47;
-  background: #F7F2EA;
+  border: 0px solid #8B6F47;
+  background-color: transparent;
   color: #4C3A2E;
   border-radius: 18px;
   font-family: 'Noto Sans KR', sans-serif;
@@ -28,8 +70,8 @@
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
+
 
 .builder-controls button:hover,
 .builder-controls select:hover {
@@ -37,10 +79,13 @@
   border-color: #7B5E3F;
 }
 
+
+
 /* 컬러 버튼 컨테이너 */
 .color-buttons {
   display: flex;
   align-items: center;
+  background-color: none;
 }
 
 /* 캔버스 영역 */
@@ -48,6 +93,13 @@
   flex: 1;
   display: flex;
   justify-content: center;
+  overflow: visible;
+  margin-bottom: -100px;
+}
+
+.builder-canvas.read-only {
+  margin-bottom: 0; /* 예제에서는 원래 위치로 */
+  margin-top: -90px; /* 원하는 만큼 위로 조절 */
 }
 
 .builder-svg {
@@ -123,6 +175,104 @@
   filter: drop-shadow(0 0 8px #fff);
   animation: glow 1s infinite alternate;
 }
+
+.shape-icon-button {
+  all: unset;
+  cursor: pointer;
+  margin: 6px;
+  padding: 0;
+  display: inline-block;
+}
+
+.shape-icon-button svg {
+  width: 80px;
+  height: 80px;
+  overflow: visible;
+  display: block;
+}
+
+/* 스위치 전체 박스 */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 72px; /* 기존 90px → 80% 축소 */
+  height: 27px; /* 34px → 80% 축소 */
+  background: #f7f2ea; /* 베이지 배경 */
+  border-radius: 27px;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  background-color: #f7f2ea;
+  border-radius: 24px;
+  transition: background-color 0.3s ease;
+}
+
+/* ON 상태 배경 */
+input:checked + .slider {
+  background-color: #a18872;
+}
+
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 20.8px; /* 80% of 26px */
+  width: 20.8px;
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.4s ease;
+  z-index: 2;
+  border: 1px solid #ccc;
+}
+
+/* 체크 시 원 이동 */
+input:checked + .slider::before {
+  transform: translate(43.2px, -50%);
+}
+
+/* 라벨 텍스트 */
+.slider .label-text {
+  position: absolute;
+  top: 50%;
+  left: 65%;
+  transform: translate(-50%, -50%);
+  font-size: 11.2px; /* 14px → 80% */
+  color: #a18872;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 전체 감싸는 위치 조정 */
+.pitchline-toggle {
+  position: absolute;
+  top: 60px;
+  left: 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+
+
 
 @keyframes glow {
   from {

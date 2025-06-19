@@ -13,50 +13,52 @@ function LastSection() {
         {/* 큰 원 */}
         <circle cx="900" cy="450" r="350" fill="#FE6E3D" />
 
-        {/* 오른쪽쪽 원 */}
-        <circle cx="1300" cy="250" r="250" fill="#F7F2EA" />
-
-        {/* 오른쪽 원 기준 텍스트 경로 */}
-        <path
-          id="textCirclePath"
-          d="M 1100,250 a 200,200 0 1,1 399,0 a 200,200 0 1,1 -399,0"
-          fill="none"
+        {/* 오른쪽 원 (배경 + 테두리) */}
+        <circle
+          cx="1300"
+          cy="250"
+          r="180"
+          fill="#F7F2EA"
+          stroke="#FE6E3D"
+          strokeWidth="6"
         />
-
-        <text
-          fontSize="22"
-          fill="#FE6E3D"
-          fontFamily="Loos Extended"
-          letterSpacing="1"
-        >
-          <textPath href="#textCirclePath" startOffset="50%" textAnchor="middle">
-            소리를 그리는 작곡가 Anthony Braxton은 다양한 소리를 시각적 도형으로 분류해, 실험적이고 논리적인 방식으로 작곡했습니다. 그의 방식처럼, 소리를 직관적으로 다룰 수 있는 창의적인 인터페이스를 개발하고자 했습니다. 이 프로젝트는 Anthony Braxton의 음악 기호화 체계에서 영감을 받았습니다.
-          </textPath>
-        </text>
 
         {/* 왼쪽 상단 점 두 개 */}
         <circle cx="50" cy="80" r="14" fill="#FE6E3D" />
         <circle cx="50" cy="130" r="14" fill="#FE6E3D" />
 
-        {/* 왼쪽 하단 직선 하나 */}
+        {/* 왼쪽 하단 직선 */}
         <rect x="40" y="800" width="14" height="60" fill="#FE6E3D" />
       </svg>
 
-      {/* 회전 이미지 */}
+      {/* 회전 이미지 (테두리 없음) */}
       <img
-        src="/img/ab.png"
+        src={`${process.env.PUBLIC_URL}/img/ab.png`}
         alt="Anthony Braxton"
         style={{
           position: "absolute",
-          top: "350px",
-          left: "200px",
+          top: "300px",
+          left: "250px",
           width: "400px",
-          animation: "spin 10s linear infinite", // 🔄 애니메이션
-          transformOrigin: "center center",
+          height: "400px",
+          borderRadius: "50%",
+          objectFit: "cover",
+          animation: "spin 10s linear infinite",
         }}
       />
 
-      {/* 인라인 키프레임 정의 */}
+      {/* 설명 텍스트 */}
+      <div style={styles.textBlock}>
+        <div style={styles.name}>Anthony Braxton</div>
+        <div style={styles.subtitle}>소리를 그리는 작곡가</div>
+        <div style={styles.paragraph}>
+          Braxton은 다양한 소리를 시각적 도형으로 분류해,<br />
+          실험적이고 논리적인 방식으로 작곡했습니다.<br />
+          그의 방식처럼, 소리를 직관적으로 다룰 수 있는 <br />
+          창의적인 인터페이스를 개발하고자 했습니다.
+        </div>
+      </div>
+
       <style>
         {`
           @keyframes spin {
@@ -75,14 +77,36 @@ const styles = {
     height: "100vh",
     overflow: "hidden",
     position: "relative",
-    padding: 0,
-    margin: 0,
+    backgroundColor: "#F7F2EA",
+    fontFamily: "Lexend Giga, sans-serif",
   },
   svg: {
-    display: "block",
     position: "absolute",
     top: 0,
     left: 0,
+  },
+  textBlock: {
+    position: "absolute",
+    right: "120px",
+    bottom: "50px", // ⬅️ 살짝 더 아래로 이동
+    textAlign: "right",
+    color: "#000",
+    lineHeight: "1.6",
+  },
+  name: {
+    fontSize: "28px",
+    fontWeight: "bold",
+    marginBottom: "10px",
+  },
+  subtitle: {
+    fontSize: "20px",
+    color: "#FE6E3D",
+    fontWeight: "600",
+    marginBottom: "16px",
+  },
+  paragraph: {
+    fontSize: "18px",
+    color: "#333",
   },
 };
 
